@@ -1,6 +1,8 @@
+const mockService = require('../../service/mock.service');
+
 const getAll = async () => {
-  // TODO: mock implementation. should be replaced during task development
-  return [];
+  const allUsers = await mockService.getAllUsers();
+  return allUsers;
 };
 
 module.exports = { getAll };
