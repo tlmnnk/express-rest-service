@@ -1,8 +1,47 @@
 const mockService = require('../../service/mock.service');
+const data = require('../../data');
+
+let userData = [...data.users];
 
 const getAll = async () => {
-  const allUsers = await mockService.getAllUsers();
-  return allUsers;
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(userData);
+    }, 300);
+  });
 };
 
-module.exports = { getAll };
+const addUser = async user => {
+  const updatedUser = await mockService.addUser(user);
+  userData.push(user);
+  return updatedUser;
+};
+
+const updatedUser = async (id, body) => {
+  const allUsers = await getAll();
+  const newUserData = allUsers.filter(item => item.id !== id);
+  userData = [
+    ...newUserData,
+    {
+      id,
+      ...body
+    }
+  ];
+  console.log(userData);
+  return body;
+};
+
+const deleteUser = async id => {
+  const allUsers = await getAll();
+  const newUserData = allUsers.filter(item => item.id !== id);
+  const user = allUsers.find(item => item.id === id);
+  userData = [...newUserData];
+  return user;
+};
+
+module.exports = {
+  getAll,
+  addUser,
+  updatedUser,
+  deleteUser
+};

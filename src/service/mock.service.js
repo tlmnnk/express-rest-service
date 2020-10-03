@@ -8,6 +8,15 @@ const getAllUsers = () => {
   });
 };
 
+const addUser = user => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(user);
+    }, 300);
+  });
+};
+
 module.exports = {
-  getAllUsers
+  getAllUsers,
+  addUser
 };
