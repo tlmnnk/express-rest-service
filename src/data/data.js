@@ -19,6 +19,22 @@ const users = [
   }
 ];
 
+const boards = [
+  {
+    id: 1,
+    tasks: []
+  },
+  {
+    id: 2,
+    tasks: []
+  },
+  {
+    id: 3,
+    tasks: []
+  }
+];
+
 module.exports = {
-  users
+  users,
+  boards
 };
