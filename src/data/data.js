@@ -21,16 +21,37 @@ const users = [
 
 const boards = [
   {
+    id: 0,
+    title: 'board 1',
+    columns: [
+      {
+        id: 0,
+        title: 'column title',
+        order: 0
+      }
+    ]
+  },
+  {
     id: 1,
-    tasks: []
+    title: 'board 2',
+    columns: [
+      {
+        id: 0,
+        title: 'column title',
+        order: 0
+      }
+    ]
   },
   {
     id: 2,
-    tasks: []
-  },
-  {
-    id: 3,
-    tasks: []
+    title: 'board 3',
+    columns: [
+      {
+        id: 0,
+        title: 'column title',
+        order: 0
+      }
+    ]
   }
 ];
 
