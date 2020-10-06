@@ -10,7 +10,7 @@ router.route('/').get(async (req, res) => {
 });
 
 router.route('/:id').get(async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const { id } = req.params;
   const board = await boardSerivce.getBoard(id);
   res.json(board);
 });

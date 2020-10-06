@@ -14,7 +14,8 @@ class User {
   }
 
   static toResponse(user) {
-    const { id, name, login } = user;
+    const { id = uuid(), name = 'default', login = '' } = user;
+
     return { id, name, login };
   }
 }

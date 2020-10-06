@@ -23,11 +23,10 @@ const updatedUser = async (id, body) => {
   userData = [
     ...newUserData,
     {
-      id,
-      ...body
+      ...body,
+      id: id.toString()
     }
   ];
-  console.log(userData);
   return body;
 };
 
