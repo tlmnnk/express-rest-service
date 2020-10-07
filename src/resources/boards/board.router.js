@@ -12,36 +12,45 @@ router.route('/').get(async (req, res) => {
 router.route('/:id').get(async (req, res) => {
   const { id } = req.params;
   const board = await boardSerivce.getBoard(id);
-  res.json(board);
+  if (board) {
+    res.json(board);
+  } else {
+    res.status(404).json({
+      message: 'Board not found'
+    });
+  }
 });
 
 router.route('/').post(async (req, res) => {
   const board = await boardSerivce.createBoard(new BoardModel(req.body));
 
-  res.json({
-    message: 'New Board created',
-    body: board
-  });
+  res.json(board);
 });
 
 router.route('/:id').put(async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const { id } = req.params;
   const board = await boardSerivce.updateBoard(id, req.body);
 
-  res.json({
-    message: 'Board was updated',
-    body: board
-  });
+  if (board) {
+    res.json(board);
+  } else {
+    res.json({
+      message: 'Board not found'
+    });
+  }
 });
 
 router.route('/:id').delete(async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const { id } = req.params;
   const board = await boardSerivce.deleteBoard(id);
 
-  res.json({
-    message: 'Board was deleted',
-    body: board
-  });
+  if (board) {
+    res.sendStatus(200);
+  } else {
+    res.status(404).json({
+      message: 'something went wrong'
+    });
+  }
 });
 
 module.exports = router;

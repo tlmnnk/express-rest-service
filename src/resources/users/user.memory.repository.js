@@ -1,40 +1,39 @@
-const mockService = require('../../service/mock.service');
-const data = require('../../data');
-
-let userData = [...data.users];
+const db = require('../../db');
 
 const getAll = async () => {
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(userData);
+      resolve(db.users);
     }, 300);
   });
 };
 
 const addUser = async user => {
-  const updatedUser = await mockService.addUser(user);
-  userData.push(user);
-  return updatedUser;
+  db.users.push(user);
+  return user;
 };
 
 const updatedUser = async (id, body) => {
-  const allUsers = await getAll();
-  const newUserData = allUsers.filter(item => item.id !== id);
-  userData = [
-    ...newUserData,
-    {
-      ...body,
-      id: id.toString()
-    }
-  ];
-  return body;
+  const userToUpdate = db.users.find(item => item.id === id);
+  const newUserData = db.users.filter(item => item.id !== id);
+  if (userToUpdate) {
+    db.users = [
+      ...newUserData,
+      {
+        ...body,
+        id: id.toString()
+      }
+    ];
+    return body;
+  }
+  return null;
 };
 
 const deleteUser = async id => {
-  const allUsers = await getAll();
-  const newUserData = allUsers.filter(item => item.id !== id);
-  const user = allUsers.find(item => item.id === id);
-  userData = [...newUserData];
+  const newUserData = db.users.filter(item => item.id !== id);
+  const user = db.users.find(item => item.id === id);
+  db.unassignTasks(id);
+  db.users = [...newUserData];
   return user;
 };
 

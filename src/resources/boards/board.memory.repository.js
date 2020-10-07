@@ -1,44 +1,37 @@
-const data = require('../../data');
-
-let boards = [...data.boards];
+const db = require('../../db');
 
 const getAll = () => {
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(boards);
+      resolve(db.boards);
     }, 300);
   });
 };
 
 const getBoard = async id => {
-  const boardsData = await getAll();
-  const board = boardsData.find(item => item.id === id);
+  const board = db.boards.find(item => item.id === id);
 
   return board;
 };
 
 const createBoard = async board => {
-  const boardsData = await getAll();
-
-  boards = [...boardsData, board];
+  db.boards = [...db.boards, board];
   return board;
 };
 
 const updateBoard = async (id, body) => {
-  const boardsData = await getAll();
-  const newBoards = boardsData.filter(item => item.id !== id);
+  const newBoards = db.boards.filter(item => item.id !== id);
 
-  boards = [...newBoards, body];
+  db.boards = [...newBoards, body];
 
   return body;
 };
 
 const deleteBoard = async id => {
-  const boardsData = await getAll();
-  const board = boardsData.find(item => item.id === id);
-  const newBoards = boardsData.filter(item => item.id !== id);
-
-  boards = [...newBoards];
+  const board = db.boards.find(item => item.id === id);
+  const newBoards = db.boards.filter(item => item.id !== id);
+  db.deleteBoardTasks(id);
+  db.boards = [...newBoards];
   return board;
 };
 

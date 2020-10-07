@@ -1,12 +1,10 @@
-const data = require('../../data');
-
-let tasks = [...data.tasks];
+const db = require('../../db');
 
 const getAll = async boardId => {
   return new Promise(resolve => {
     setTimeout(() => {
-      boardId && resolve(tasks.filter(task => task.boardId === boardId));
-      !boardId && resolve(tasks);
+      boardId && resolve(db.tasks.filter(task => task.boardId === boardId));
+      !boardId && resolve(db.tasks);
     }, 300);
   });
 };
@@ -20,23 +18,21 @@ const getTask = async (boardId, taskId) => {
 const addTask = async (boardId, body) => {
   const tasksData = await getAll();
   const newTask = { ...body, boardId };
-  tasks = [...tasksData, newTask];
+  db.tasks = [...tasksData, newTask];
 
   return newTask;
 };
 
 const updateTask = async (boardId, taskId, body) => {
-  const tasksData = await getAll();
-  const taskIndex = tasksData.findIndex(
+  const taskIndex = db.tasks.findIndex(
     item => item.boardId === boardId && item.id === taskId
   );
-  console.log('taskto update', taskIndex);
+  const task = { ...body, boardId };
   if (taskIndex !== -1) {
-    const task = { ...body, boardId };
-    tasks = [
-      ...tasksData.splice(0, taskIndex),
+    db.tasks = [
+      ...db.tasks.splice(0, taskIndex),
       task,
-      ...tasksData.splice(taskIndex)
+      ...db.tasks.splice(taskIndex)
     ];
     return task;
   }
@@ -49,9 +45,11 @@ const deleteTask = async (boardId, taskId) => {
   const taskIndex = tasksData.findIndex(
     item => item.boardId === boardId && item.id === taskId
   );
-  console.log('tasksData', tasksData);
   if (taskIndex !== -1) {
-    tasks = [...tasksData.splice(0, taskIndex), ...tasksData.splice(taskIndex)];
+    db.tasks = [
+      ...tasksData.splice(0, taskIndex),
+      ...tasksData.splice(taskIndex)
+    ];
     return tasksData[taskIndex];
   }
   return null;

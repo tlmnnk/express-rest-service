@@ -21,7 +21,7 @@ class BoardModel {
       return {
         id: uuid(),
         title: column.title ? column.title : `column №${i}`,
-        order: i
+        order: i + 1
       };
     });
   }

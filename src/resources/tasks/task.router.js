@@ -28,10 +28,7 @@ router.route('/:boardId/tasks').post(async (req, res) => {
   );
 
   if (task) {
-    res.json({
-      message: 'New task created',
-      body: task
-    });
+    res.json(task);
   } else {
     res.status(404).json({
       message: 'Something went wrong'
@@ -44,10 +41,7 @@ router.route('/:boardId/tasks/:taskId').put(async (req, res) => {
   const updated = await taskService.updateTask(boardId, taskId, req.body);
 
   if (updated) {
-    res.json({
-      message: 'Task was updated',
-      body: req.body
-    });
+    res.json(updated);
   } else {
     res.json({
       message: 'Task not found'
@@ -60,10 +54,7 @@ router.route('/:boardId/tasks/:taskId').delete(async (req, res) => {
   const deletedTask = taskService.deleteTask(boardId, taskId);
 
   if (deletedTask) {
-    res.json({
-      message: 'Task was deleted',
-      body: deletedTask
-    });
+    res.sendStatus(200);
   } else {
     res.status(404).json({
       message: 'Task not found'
