@@ -5,6 +5,8 @@ const YAML = require('yamljs');
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
+const morgan = require('morgan');
+const logger = require('./utils/logger');
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -12,6 +14,12 @@ const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 app.use(express.json());
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
+app.use(
+  morgan(':method :url :status :query :body - :response-time ms', {
+    stream: logger.stream
+  })
+);
 
 app.use('/', (req, res, next) => {
   if (req.originalUrl === '/') {
