@@ -31,6 +31,9 @@ app.use((req, res, next) => {
   finished(res, () => {
     const { statusCode } = res;
     const ms = Date.now() - start;
+    if (url.includes('users') && ['PUT', 'POST'].includes(method)) {
+      delete body.password;
+    }
     logger.info(
       `${method} ${statusCode} ${url} ${JSON.stringify(query)} ${JSON.stringify(
         body
