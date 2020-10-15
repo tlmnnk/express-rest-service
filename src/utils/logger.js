@@ -1,9 +1,5 @@
 const { createLogger, format, transports } = require('winston');
-const morgan = require('morgan');
 const { combine, printf } = format;
-
-morgan.token('query', req => JSON.stringify(req.query));
-morgan.token('body', req => JSON.stringify(req.body));
 
 const myFormat = printf(({ message, timestamp }) => {
   return `[${timestamp}]  ${message}`;
@@ -12,11 +8,27 @@ const myFormat = printf(({ message, timestamp }) => {
 const logger = createLogger({
   format: combine(format.timestamp(), myFormat),
   transports: [
-    new transports.Console(),
-    new transports.File({ filename: 'combined.log' })
+    new transports.Console({
+      handleExceptions: true
+    }),
+    new transports.File({
+      filename: `combined-${new Date().toLocaleDateString()}.log`,
+      handleExceptions: true
+    })
   ],
-  exceptionHandlers: [new transports.File({ filename: 'exceptions.log' })],
-  rejectionHandlers: [new transports.File({ filename: 'rejections.log' })],
+  exceptionHandlers: [
+    new transports.File({
+      filename: `exceptions-${new Date().toLocaleDateString()}.log`,
+      handleExceptions: true
+    })
+  ],
+  rejectionHandlers: [
+    new transports.File({
+      filename: `rejections-${new Date().toLocaleDateString()}.log`,
+      handleExceptions: true
+    })
+  ],
+  handleExceptions: true,
   exitOnError: false
 });
 
