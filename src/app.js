@@ -67,4 +67,8 @@ app.use((req, res) => {
   res.status(NOT_FOUND).send(getStatusText(NOT_FOUND));
 });
 
+// Uncomment to test uncaughtException and uncaughtRejection handling
+// throw Error('Oops!');
+// Promise.reject(Error('Oops!'));
+
 module.exports = app;
