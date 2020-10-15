@@ -1,11 +1,12 @@
 const router = require('express').Router();
+const { OK, NOT_FOUND } = require('http-status-codes');
 const TaskModel = require('./task.model');
 const taskService = require('./task.service');
 
 router.route('/:boardId/tasks').get(async (req, res) => {
   const tasks = await taskService.getAll(req.params.boardId);
 
-  res.json(tasks);
+  res.status(OK).json(tasks);
 });
 
 router.route('/:boardId/tasks/:taskId/').get(async (req, res) => {
@@ -13,9 +14,9 @@ router.route('/:boardId/tasks/:taskId/').get(async (req, res) => {
   const task = await taskService.getTask(boardId, taskId);
 
   if (task) {
-    res.json(task);
+    res.status(OK).json(task);
   } else {
-    res.status(404).json({
+    res.status(NOT_FOUND).json({
       message: 'task not found'
     });
   }
@@ -28,9 +29,9 @@ router.route('/:boardId/tasks').post(async (req, res) => {
   );
 
   if (task) {
-    res.json(task);
+    res.status(OK).json(task);
   } else {
-    res.status(404).json({
+    res.status(NOT_FOUND).json({
       message: 'Something went wrong'
     });
   }
@@ -41,9 +42,9 @@ router.route('/:boardId/tasks/:taskId').put(async (req, res) => {
   const updated = await taskService.updateTask(boardId, taskId, req.body);
 
   if (updated) {
-    res.json(updated);
+    res.status(OK).json(updated);
   } else {
-    res.json({
+    res.status(NOT_FOUND).json({
       message: 'Task not found'
     });
   }
@@ -54,9 +55,9 @@ router.route('/:boardId/tasks/:taskId').delete(async (req, res) => {
   const deletedTask = taskService.deleteTask(boardId, taskId);
 
   if (deletedTask) {
-    res.sendStatus(200);
+    res.sendStatus(OK);
   } else {
-    res.status(404).json({
+    res.status(NOT_FOUND).json({
       message: 'Task not found'
     });
   }

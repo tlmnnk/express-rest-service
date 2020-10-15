@@ -1,3 +1,4 @@
+const { OK, NOT_FOUND } = require('http-status-codes');
 const BoardModel = require('./board.model');
 const boardSerivce = require('./board.service');
 
@@ -6,16 +7,16 @@ const router = require('express').Router();
 router.route('/').get(async (req, res) => {
   const boards = await boardSerivce.getAll();
 
-  res.json(boards);
+  res.status(OK).json(boards);
 });
 
 router.route('/:id').get(async (req, res) => {
   const { id } = req.params;
   const board = await boardSerivce.getBoard(id);
   if (board) {
-    res.json(board);
+    res.status(OK).json(board);
   } else {
-    res.status(404).json({
+    res.status(NOT_FOUND).json({
       message: 'Board not found'
     });
   }
@@ -24,7 +25,7 @@ router.route('/:id').get(async (req, res) => {
 router.route('/').post(async (req, res) => {
   const board = await boardSerivce.createBoard(new BoardModel(req.body));
 
-  res.json(board);
+  res.status(OK).json(board);
 });
 
 router.route('/:id').put(async (req, res) => {
@@ -32,9 +33,9 @@ router.route('/:id').put(async (req, res) => {
   const board = await boardSerivce.updateBoard(id, req.body);
 
   if (board) {
-    res.json(board);
+    res.status(OK).json(board);
   } else {
-    res.json({
+    res.status(NOT_FOUND).json({
       message: 'Board not found'
     });
   }
@@ -45,9 +46,9 @@ router.route('/:id').delete(async (req, res) => {
   const board = await boardSerivce.deleteBoard(id);
 
   if (board) {
-    res.sendStatus(200);
+    res.sendStatus(OK);
   } else {
-    res.status(404).json({
+    res.status(NOT_FOUND).json({
       message: 'something went wrong'
     });
   }
