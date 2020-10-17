@@ -56,6 +56,11 @@ app.use('/boards', boardRouter);
 
 app.use('/boards', taskRouter);
 
+app.use((req, res, next) => {
+  res.status(NOT_FOUND).send(getStatusText(NOT_FOUND));
+  next();
+});
+
 app.use((err, req, res, next) => {
   if (err) {
     logger.error(err.stack);
@@ -64,10 +69,6 @@ app.use((err, req, res, next) => {
       .send(getStatusText(INTERNAL_SERVER_ERROR));
   }
   next();
-});
-
-app.use((req, res) => {
-  res.status(NOT_FOUND).send(getStatusText(NOT_FOUND));
 });
 
 // Uncomment to test uncaughtException and uncaughtRejection handling
