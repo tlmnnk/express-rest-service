@@ -1,3 +1,3 @@
-const DB = require('./db');
+const { connectToDB } = require('./db');
 
-module.exports = DB;
+module.exports = { connectToDB };
