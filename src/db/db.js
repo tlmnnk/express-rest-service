@@ -1,6 +1,7 @@
 // const data = require('../data');
 const mongoose = require('mongoose');
 const { MONGO_CONNECTION_STRING } = require('../common/config');
+// const User = require('../resources/users/user.model');
 
 // class DB {
 //   constructor({ users = [], boards = [], tasks = [] }) {

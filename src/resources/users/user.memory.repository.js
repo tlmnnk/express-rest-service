@@ -1,44 +1,28 @@
-const db = require('../../db');
+const User = require('../users/user.model');
 
 const getAll = async () => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(db.users);
-    }, 300);
-  });
+  return await User.find({});
+};
+
+const getById = async id => {
+  return User.findOne({ _id: id });
 };
 
 const addUser = async user => {
-  db.users.push(user);
-  return user;
+  return User.create(user);
 };
 
 const updatedUser = async (id, body) => {
-  const userToUpdate = db.users.find(item => item.id === id);
-  const newUserData = db.users.filter(item => item.id !== id);
-  if (userToUpdate) {
-    db.users = [
-      ...newUserData,
-      {
-        ...body,
-        id: id.toString()
-      }
-    ];
-    return body;
-  }
-  return null;
+  return User.updateOne({ _id: id }, body);
 };
 
 const deleteUser = async id => {
-  const newUserData = db.users.filter(item => item.id !== id);
-  const user = db.users.find(item => item.id === id);
-  db.unassignTasks(id);
-  db.users = [...newUserData];
-  return user;
+  return (await User.deleteOne({ _id: id })).deletedCount;
 };
 
 module.exports = {
   getAll,
+  getById,
   addUser,
   updatedUser,
   deleteUser
