@@ -1,4 +1,4 @@
-const User = require('../users/user.model');
+const { User } = require('../users/user.model');
 
 const getAll = async () => {
   return await User.find({});
@@ -13,7 +13,7 @@ const addUser = async user => {
 };
 
 const updatedUser = async (id, body) => {
-  return User.updateOne({ _id: id }, body);
+  return User.findOneAndUpdate({ _id: id }, { $set: body }, { new: true });
 };
 
 const deleteUser = async id => {

@@ -7,6 +7,7 @@ const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
 const logger = require('./utils/logger');
 const { finished } = require('stream');
+const helmet = require('helmet');
 
 const {
   INTERNAL_SERVER_ERROR,
@@ -15,9 +16,11 @@ const {
 } = require('http-status-codes');
 
 const app = express();
+
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
 app.use(express.json());
+app.use(helmet());
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
