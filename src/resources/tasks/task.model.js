@@ -16,4 +16,20 @@ const TaskSchema = new mongoose.Schema({
 
 const TaskModel = mongoose.model('Task', TaskSchema);
 
-module.exports = TaskModel;
+const taskToResponse = task => {
+  const { _id, order, description, userId, boardId, columnId, title } = task;
+  return {
+    id: _id,
+    title,
+    order,
+    description,
+    userId,
+    boardId,
+    columnId
+  };
+};
+
+module.exports = {
+  TaskModel,
+  taskToResponse
+};

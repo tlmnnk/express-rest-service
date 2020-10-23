@@ -1,4 +1,4 @@
-const TaskModel = require('../tasks/task.model');
+const { TaskModel } = require('../tasks/task.model');
 
 const getAll = async boardId => {
   return TaskModel.find({ boardId });
@@ -23,8 +23,16 @@ const updateTask = async (boardId, taskId, body) => {
   );
 };
 
+const updateMany = async (userId, update) => {
+  return TaskModel.updateMany(userId, update);
+};
+
 const deleteTask = async (boardId, taskId) => {
   return (await TaskModel.deleteOne({ _id: taskId, boardId })).deletedCount;
+};
+
+const deleteByBoardId = async boardId => {
+  return TaskModel.deleteMany({ boardId });
 };
 
 module.exports = {
@@ -32,5 +40,7 @@ module.exports = {
   getTask,
   addTask,
   updateTask,
-  deleteTask
+  deleteTask,
+  deleteByBoardId,
+  updateMany
 };

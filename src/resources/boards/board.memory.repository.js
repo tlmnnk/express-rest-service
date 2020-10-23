@@ -1,38 +1,27 @@
-const db = require('../../db');
+const { BoardModel } = require('../boards/board.model');
 
 const getAll = () => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(db.boards);
-    }, 300);
-  });
+  return BoardModel.find({});
 };
 
 const getBoard = async id => {
-  const board = db.boards.find(item => item.id === id);
-
-  return board;
+  return BoardModel.findOne({ _id: id });
 };
 
 const createBoard = async board => {
-  db.boards = [...db.boards, board];
-  return board;
+  return BoardModel.create(board);
 };
 
 const updateBoard = async (id, body) => {
-  const newBoards = db.boards.filter(item => item.id !== id);
-
-  db.boards = [...newBoards, body];
-
-  return body;
+  return BoardModel.findOneAndUpdate(
+    { _id: id },
+    { $set: body },
+    { new: true }
+  );
 };
 
 const deleteBoard = async id => {
-  const board = db.boards.find(item => item.id === id);
-  const newBoards = db.boards.filter(item => item.id !== id);
-  db.deleteBoardTasks(id);
-  db.boards = [...newBoards];
-  return board;
+  return (await BoardModel.deleteOne({ _id: id })).deletedCount;
 };
 
 module.exports = {
