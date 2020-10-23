@@ -1,58 +1,30 @@
-const db = require('../../db');
+const TaskModel = require('../tasks/task.model');
 
 const getAll = async boardId => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      boardId && resolve(db.tasks.filter(task => task.boardId === boardId));
-      !boardId && resolve(db.tasks);
-    }, 300);
-  });
+  return TaskModel.find({ boardId });
 };
 
 const getTask = async (boardId, taskId) => {
-  const tasksData = await getAll(boardId);
-  const task = tasksData.find(item => item.id === taskId);
-  return task;
+  return TaskModel.findOne({ _id: taskId, boardId });
 };
 
 const addTask = async (boardId, body) => {
-  const tasksData = await getAll();
-  const newTask = { ...body, boardId };
-  db.tasks = [...tasksData, newTask];
-
-  return newTask;
+  return TaskModel.create({
+    ...body,
+    boardId
+  });
 };
 
 const updateTask = async (boardId, taskId, body) => {
-  const taskIndex = db.tasks.findIndex(
-    item => item.boardId === boardId && item.id === taskId
+  return TaskModel.findOneAndUpdate(
+    { _id: taskId, boardId },
+    { $set: body },
+    { new: true }
   );
-  const task = { ...body, boardId };
-  if (taskIndex !== -1) {
-    db.tasks = [
-      ...db.tasks.splice(0, taskIndex),
-      task,
-      ...db.tasks.splice(taskIndex)
-    ];
-    return task;
-  }
-  return null;
 };
 
 const deleteTask = async (boardId, taskId) => {
-  const tasksData = await getAll();
-
-  const taskIndex = tasksData.findIndex(
-    item => item.boardId === boardId && item.id === taskId
-  );
-  if (taskIndex !== -1) {
-    db.tasks = [
-      ...tasksData.splice(0, taskIndex),
-      ...tasksData.splice(taskIndex)
-    ];
-    return tasksData[taskIndex];
-  }
-  return null;
+  return (await TaskModel.deleteOne({ _id: taskId, boardId })).deletedCount;
 };
 
 module.exports = {

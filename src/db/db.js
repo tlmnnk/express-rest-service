@@ -1,6 +1,6 @@
-// const data = require('../data');
 const mongoose = require('mongoose');
 const { MONGO_CONNECTION_STRING } = require('../common/config');
+const logger = require('../utils/logger');
 // const User = require('../resources/users/user.model');
 
 // class DB {
@@ -31,18 +31,19 @@ const { MONGO_CONNECTION_STRING } = require('../common/config');
 // const db = new DB(data);
 
 const connectToDB = cb => {
+  logger.info('Connecting to DB...');
   mongoose.connect(MONGO_CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
   });
   const db = mongoose.connection;
-  db.on('error', e => {
-    throw e;
+  db.on('error', () => {
+    logger.error('Database error...');
   });
 
   db.once('open', () => {
-    console.log('Connected to DB');
+    logger.info('Successfully connected to DB');
   });
   cb();
 };

@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const { OK, NOT_FOUND } = require('http-status-codes');
-const TaskModel = require('./task.model');
 const taskService = require('./task.service');
 
 router.route('/:boardId/tasks').get(async (req, res) => {
@@ -23,10 +22,7 @@ router.route('/:boardId/tasks/:taskId/').get(async (req, res) => {
 });
 
 router.route('/:boardId/tasks').post(async (req, res) => {
-  const task = await taskService.addTask(
-    req.params.boardId,
-    new TaskModel(req.body)
-  );
+  const task = await taskService.addTask(req.params.boardId, req.body);
 
   if (task) {
     res.status(OK).json(task);
@@ -40,7 +36,8 @@ router.route('/:boardId/tasks').post(async (req, res) => {
 router.route('/:boardId/tasks/:taskId').put(async (req, res) => {
   const { boardId, taskId } = req.params;
   const updated = await taskService.updateTask(boardId, taskId, req.body);
-
+  console.log('updated');
+  console.log(updated);
   if (updated) {
     res.status(OK).json(updated);
   } else {
