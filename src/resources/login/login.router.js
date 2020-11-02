@@ -8,7 +8,9 @@ router.post('/', async (req, res) => {
   if (!token) {
     res.sendStatus(403).send('Wrong login/password');
   } else {
-    res.status(200).json(token);
+    res.status(200).json({
+      token
+    });
   }
 });
 

@@ -20,8 +20,8 @@ const deleteUser = async id => {
   return (await User.deleteOne({ _id: id })).deletedCount;
 };
 
-const getByAuth = async (login, password) => {
-  return await User.findOne({ login, password });
+const getByLogin = async login => {
+  return await User.findOne({ login });
 };
 module.exports = {
   getAll,
@@ -29,5 +29,5 @@ module.exports = {
   addUser,
   updatedUser,
   deleteUser,
-  getByAuth
+  getByLogin
 };

@@ -27,7 +27,7 @@ router.route('/').post(async (req, res) => {
     res.status(OK).json(toResponse(user));
   } else {
     res.status(NOT_FOUND).json({
-      message: 'Error. User not found'
+      message: 'Error. User not crated'
     });
   }
 });

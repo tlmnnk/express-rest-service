@@ -49,7 +49,7 @@ router.route('/:boardId/tasks/:taskId').put(async (req, res) => {
 
 router.route('/:boardId/tasks/:taskId').delete(async (req, res) => {
   const { boardId, taskId } = req.params;
-  const deletedCount = taskService.deleteTask(boardId, taskId);
+  const deletedCount = await taskService.deleteTask(boardId, taskId);
 
   if (deletedCount) {
     res.sendStatus(OK);
