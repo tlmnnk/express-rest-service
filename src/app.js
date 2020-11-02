@@ -9,6 +9,7 @@ const loginRouter = require('./resources/login/login.router');
 const logger = require('./utils/logger');
 const { finished } = require('stream');
 const helmet = require('helmet');
+const checkAuth = require('./utils/checkAuth');
 
 const {
   INTERNAL_SERVER_ERROR,
@@ -35,7 +36,10 @@ app.use((req, res, next) => {
   finished(res, () => {
     const { statusCode } = res;
     const ms = Date.now() - start;
-    if (url.includes('users') && ['PUT', 'POST'].includes(method)) {
+    if (
+      (url.includes('users') && ['PUT', 'POST'].includes(method)) ||
+      url.includes('login')
+    ) {
       delete body.password;
     }
     logger.info(
@@ -56,13 +60,11 @@ app.use('/', (req, res, next) => {
 
 app.use('/login', loginRouter);
 
-// app.use(checkAuth);
+app.use('/users', checkAuth, userRouter);
 
-app.use('/users', userRouter);
+app.use('/boards', checkAuth, boardRouter);
 
-app.use('/boards', boardRouter);
-
-app.use('/boards', taskRouter);
+app.use('/boards', checkAuth, taskRouter);
 
 app.use((req, res, next) => {
   res.status(NOT_FOUND).send(getStatusText(NOT_FOUND));

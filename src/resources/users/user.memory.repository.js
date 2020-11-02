@@ -20,8 +20,8 @@ const deleteUser = async id => {
   return (await User.deleteOne({ _id: id })).deletedCount;
 };
 
-const getByAuth = (login, password) => {
-  return User.findOne({ login, password });
+const getByAuth = async (login, password) => {
+  return await User.findOne({ login, password });
 };
 module.exports = {
   getAll,

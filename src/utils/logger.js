@@ -12,19 +12,19 @@ const logger = createLogger({
       handleExceptions: true
     }),
     new transports.File({
-      filename: `combined-${new Date().toLocaleDateString()}.log`,
+      filename: `logs/combined-${new Date().toLocaleDateString()}.log`,
       handleExceptions: true
     })
   ],
   exceptionHandlers: [
     new transports.File({
-      filename: `exceptions-${new Date().toLocaleDateString()}.log`,
+      filename: `logs/exceptions-${new Date().toLocaleDateString()}.log`,
       handleExceptions: true
     })
   ],
   rejectionHandlers: [
     new transports.File({
-      filename: `rejections-${new Date().toLocaleDateString()}.log`,
+      filename: `logs/rejections-${new Date().toLocaleDateString()}.log`,
       handleExceptions: true
     })
   ],
