@@ -5,6 +5,7 @@ const YAML = require('yamljs');
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
+const loginRouter = require('./resources/login/login.router');
 const logger = require('./utils/logger');
 const { finished } = require('stream');
 const helmet = require('helmet');
@@ -52,6 +53,10 @@ app.use('/', (req, res, next) => {
   }
   next();
 });
+
+app.use('/login', loginRouter);
+
+// app.use(checkAuth);
 
 app.use('/users', userRouter);
 
